@@ -442,5 +442,6 @@ Example:
 		print
 		sys.exit(cprint('[-] You must choose attack type','red'))
 
+
 if __name__ == '__main__':
 	main()
