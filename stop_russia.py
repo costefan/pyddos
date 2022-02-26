@@ -40,23 +40,25 @@ from http.client import HTTPSConnection, HTTPConnection
 # else:
 # 	print ('[-] Check your pip installer')
 
-
-try:
-	import requests,colorama
-	from termcolor import colored,\
-		cprint
-except:
-	try:
-		if os.name == 'posix':
-			os.system('sudo pip install colorama termcolor requests')
-			sys.exit('[+] I have installed nessecary modules for you')
-		elif os.name == 'nt':
-			os.sytem('c:\python27\scripts\pip.exe install colorama requests termcolor')
-			sys.exit('[+] I have installed nessecary modules for you')
-		else:
-			sys.exit('[-] Download and install nessecary modules')
-	except Exception as e:
-		print ('[-]',e)
+import requests, colorama
+from termcolor import colored, \
+	cprint
+# try:
+# 	import requests,colorama
+# 	from termcolor import colored,\
+# 		cprint
+# except:
+# 	try:
+# 		if os.name == 'posix':
+# 			os.system('sudo pip install colorama termcolor requests')
+# 			sys.exit('[+] I have installed nessecary modules for you')
+# 		elif os.name == 'nt':
+# 			os.sytem('c:\python27\scripts\pip.exe install colorama requests termcolor')
+# 			sys.exit('[+] I have installed nessecary modules for you')
+# 		else:
+# 			sys.exit('[-] Download and install nessecary modules')
+# 	except Exception as e:
+# 		print ('[-]',e)
 if os.name == 'nt':
 	colorama.init()
 
