@@ -31,14 +31,15 @@ from argparse import ArgumentParser,RawTextHelpFormatter
 from http.client import HTTPSConnection, HTTPConnection
 
 
-if os.name == 'posix':
-	c = os.system('which pip')
-	if c == 256:
-		os.system('sudo apt-get install python-pip')
-	else:
-		pass
-else:
-	print ('[-] Check your pip installer')
+# if os.name == 'posix':
+# 	c = os.system('which pip')
+# 	if c == 256:
+# 		os.system('sudo apt-get install python-pip')
+# 	else:
+# 		pass
+# else:
+# 	print ('[-] Check your pip installer')
+
 
 try:
 	import requests,colorama
